@@ -31,6 +31,9 @@ const connection = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 });
+app.get('/', (req, res) => {
+  res.redirect('/login.html');
+});
 
 
 connection.connect((err) => {
