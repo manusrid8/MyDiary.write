@@ -1,0 +1,71 @@
+body {
+  background: #fff5f7;
+  font-family: 'Delius', cursive;
+  margin: 0;
+  padding: 20px;
+  color: #000;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.Post {
+  width: 550px;
+  margin: 30px auto;
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+  background: linear-gradient( #ffdae6);
+  word-break: break-word;
+  overflow-wrap: break-word;
+  transition: background 0.3s ease, color 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+}
+
+#postImages img {
+  max-width: 100%;
+  margin-top: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease;
+}
+
+/* 🌙 DARK MODE STARTS HERE */
+body.dark-mode {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+body.dark-mode .Post {
+  background: linear-gradient(to right, #1e1e1e, #2a2a2a);
+  color: #f1f1f1;
+  border: 1px solid #555;
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode #postImages img {
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15);
+}
+
+/* Optional: reinforce title and description */
+body.dark-mode #postTitle,
+body.dark-mode #postDescription {
+  color: #f1f1f1;
+}
+body {
+    font-family: 'Delius';
+    background-color: #fff5f7;
+    background-image: url('background-light.png');
+    background-repeat: repeat;
+    background-size: auto;
+    background-attachment: fixed;
+    color: #000;
+}
+
+/* Manual Dark Mode: When body has class 'dark-mode' */
+body.dark-mode {
+    background-color: #121212;
+    background-image: url('background-dark.png');
+    background-repeat: repeat;
+    background-size: auto;
+    background-attachment: fixed;
+    color: #fff;
+}

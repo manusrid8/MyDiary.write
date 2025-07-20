@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Edit Your Entry</title>
+
+  <!-- Bootstrap and Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Delius&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./Post.css">
+</head>
+
+<body class="d-flex justify-content-center align-items-center" style="height:100vh; background-color: #fff5f7; font-family: 'Delius', cursive;">
+
+  <!-- Edit Form -->
+  <form id="editForm" class="formDiv p-4 rounded-4 shadow" style="width: 500px;" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="PostTitle" class="form-label">Edit Title</label>
+      <input type="text" class="form-control" id="PostTitle" name="title" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="daydescribe" class="form-label">Edit Description</label>
+      <textarea class="form-control" id="daydescribe" rows="7" name="description" required></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="visibility" class="form-label">Change Visibility</label>
+      <select class="form-select" id="visibility" name="visibility" required>
+        <option value="private">Private (My Feed Only)</option>
+        <option value="global">Global (Anonymous – Visible to Everyone)</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="imageUpload" class="form-label">Update Photo (optional)</label>
+      <input type="file" class="form-control" id="imageUpload" name="image" accept="image/*">
+    </div>
+
+    <button type="submit" class="btn w-100" id="postbutton" style="background-image: linear-gradient(to right, #ffe0f0, #f198bc); color: #000;">Update Post</button>
+  </form>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+  let postID = localStorage.getItem('editingPostID');
+  if (!postID) {
+    const urlParams = new URLSearchParams(window.location.search);
+    postID = urlParams.get('postID');
+    if (postID) {
+      localStorage.setItem('editingPostID', postID);
+    }
+  }
+
+  const userID = localStorage.getItem('userID');
+
+  // Preload data
+  window.onload = async () => {
+    if (!postID) {
+      alert('No post selected for editing.');
+      window.location.href = '/FeedPage.html';
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3000/getPostByID?postID=${postID}`);
+      if (!response.ok) throw new Error('Failed to fetch post data');
+
+      const post = await response.json();
+
+      document.getElementById('PostTitle').value = post.PostTitle;
+      document.getElementById('daydescribe').value = post.PostDescription;
+      document.getElementById('visibility').value = post.Visibility || 'private';
+
+    } catch (error) {
+      console.error('Error loading post:', error);
+      alert('Error loading post. Try again.');
+      window.location.href = '/FeedPage.html';
+    }
+  };
+
+  // Handle update
+  document.getElementById('editForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const form = document.getElementById('editForm');
+    const formData = new FormData(form);
+    formData.append('userID', userID);
+
+    try {
+      const response = await fetch(`http://localhost:3000/updatePost/${postID}`, {
+        method: 'PUT',
+        body: formData
+      });
+
+      if (response.ok) {
+        alert("Post updated successfully!");
+        localStorage.removeItem('editingPostID');
+        window.location.href = '/FeedPage.html';
+      } else {
+        const error = await response.text();
+        alert("Failed to update post: " + error);
+      }
+    } catch (err) {
+      console.error('Update error:', err);
+      alert('Error updating post.');
+    }
+  });
+</script>
+
+
+</body>
+</html>

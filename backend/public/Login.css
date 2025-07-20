@@ -1,0 +1,31 @@
+/* Apply default styles (light theme) */
+body {
+    font-family: 'Delius';
+    background-color: #fff5f7;
+    background-image: url('background-light.png');
+    background-repeat: repeat;
+    background-size: auto;
+    background-attachment: fixed;
+}
+
+/* Dark Theme - automatically applied if user's system is in dark mode */
+
+    .login-card {
+        box-shadow: 0px 0px 4px rgba(255, 255, 255, 0.3); /* lighter shadow for dark bg */
+    }
+
+    #LoginButton {
+        background-image: linear-gradient(to right, #444, #666); /* muted button for dark theme */
+        color: white;
+    }
+
+
+/* Light Theme Login Card & Button */
+.login-card {
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+}
+
+#LoginButton {
+    background-image: linear-gradient(to right, #ffe0f0, #ffc0d9);
+    color: black;
+}

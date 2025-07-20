@@ -1,0 +1,135 @@
+.my-caption {
+  font-family: 'Delius', cursive;
+  font-weight: bold;
+  font-size: 28px;
+  margin-top: 20px;
+  color: #333;
+}
+
+body.dark-mode .my-caption {
+  color: #f1f1f1;
+}
+
+
+body {
+  font-family: 'Delius', cursive;
+  background-color: #fff5f7;
+  margin: 0;
+  padding: 0;
+}
+
+.allPosts {
+  border: 1px rgb(35, 34, 34) solid;
+  border-radius: 10px;
+  padding: 15px;
+  width: 95%;
+  max-width: 700px;
+  margin: 20px auto;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.Post {
+  background: linear-gradient(to right, #fff, #ffe9f0);
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+  word-break: break-word;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+
+.viewPostButton,
+.read-more-btn {
+  background-image: linear-gradient(to right, #ffe0f0, #f198bc);
+  color: black;
+  font-family: 'Delius', cursive;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.viewPostButton:hover,
+.read-more-btn:hover {
+  opacity: 0.9;
+  color: black;
+  transform: scale(1.03);
+}
+
+.text-muted {
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.custom-btn {
+  background: linear-gradient(to right, #ffe0f0, #f198bc);
+  border: none;
+  color: black;
+  font-weight: bold;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-family: 'Delius', cursive;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.custom-btn:hover {
+  background: linear-gradient(to right, #f9b4d1, #ffa9cc);
+  transform: scale(1.05);
+  color: black;
+}
+
+body.dark-mode {
+  background-color: #1c1c1c;
+  color: #f5f5f5;
+}
+
+body.dark-mode .Post {
+  background: linear-gradient(to right, #444, #333);
+  color: #fff;
+  border-color: #777;
+}
+
+body.dark-mode .custom-btn,
+body.dark-mode .btn-primary,
+body.dark-mode .btn-secondary {
+  background-image: linear-gradient(to right, #ff9ac2, #e85d98);
+  color: black;
+}
+
+body.dark-mode .custom-btn:hover {
+  opacity: 0.9;
+}
+
+button {
+  font-family: 'Delius', cursive;
+}
+body {
+    font-family: 'Delius';
+    background-color: #fff5f7;
+    background-image: url('background-light.png');
+    background-repeat: repeat;
+    background-size: auto;
+    background-attachment: fixed;
+    color: #000;
+}
+
+/* Manual Dark Mode: When body has class 'dark-mode' */
+body.dark-mode {
+    background-color: #121212;
+    background-image: url('background-dark.png');
+    background-repeat: repeat;
+    background-size: auto;
+    background-attachment: fixed;
+    color: #fff;
+}
+
+

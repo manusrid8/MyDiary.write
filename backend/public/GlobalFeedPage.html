@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Global Feed | MyDiary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap & Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Delius&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./Feedpage.css">
+
+  <style>
+    body {
+      background-color: #fff5f7;
+      font-family: 'Delius', cursive;
+      color: #000;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .Post {
+      max-width: 600px;
+      margin: 20px auto;
+      background: linear-gradient(to right, #fff, #ffe9f0);
+      border-radius: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+      color: #000;
+    }
+
+    .anonymous-label {
+      font-size: 0.85rem;
+      color: #666;
+      font-style: italic;
+      margin-bottom: 5px;
+    }
+
+    .reactions {
+      margin-top: 10px;
+    }
+
+    .reaction-btn {
+      border: none;
+      background: none;
+      font-size: 1.3rem;
+      cursor: pointer;
+      margin-right: 10px;
+      transition: transform 0.2s, filter 0.2s;
+      color: inherit;
+    }
+
+    .reaction-btn:hover {
+      transform: scale(1.2);
+    }
+
+    .reaction-btn.active {
+      filter: drop-shadow(0 0 2px #ff4d91);
+    }
+
+    #scrollTopBtn {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      padding: 10px 15px;
+      background: #ff5e9c;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .post-image {
+      max-width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      border-radius: 10px;
+      display: block;
+      margin: 10px auto 0 auto;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      transition: box-shadow 0.3s ease;
+    }
+
+    /* 🌙 DARK MODE STYLES */
+    body.dark-mode {
+      background-color: #121212;
+      color: #f1f1f1;
+    }
+
+    body.dark-mode .Post {
+      background: linear-gradient(to right, #1e1e1e, #2a2a2a);
+      color: #f1f1f1;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+    }
+
+    body.dark-mode .anonymous-label {
+      color: #aaa;
+    }
+
+    body.dark-mode .reaction-btn {
+      color: #f1f1f1;
+    }
+
+    body.dark-mode .reaction-btn.active {
+      filter: drop-shadow(0 0 2px #ff89c0);
+    }
+
+    body.dark-mode .post-image {
+      box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode #scrollTopBtn {
+      background: #ff4d91;
+      box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+    }
+
+    /* Buttons in nav */
+    .btn {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark-mode .btn-secondary {
+      background-color: #444;
+      color: #f1f1f1;
+      border-color: #666;
+    }
+
+    body.dark-mode .btn-primary {
+      background-color: #3a3a8f;
+      border-color: #4a4aad;
+    }
+
+    body.dark-mode .btn-danger {
+      background-color: #802838;
+      border-color: #a8334d;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <div class="text-end p-2 container">
+    <a class="btn custom-btn" href="/Feedpage.html">📃My Diary</a> 
+    <a class="btn custom-btn " href="/Post.html">✏️ New Post</a>
+    <a class="btn custom-btn" href="/Login.html">🚪 Logout</a>
+    <button class="btn btn-secondary" onclick="toggleTheme()">🌙Dark Mode</button>
+
+  </div>
+
+  <!-- Title -->
+  <div class="text-center mb-3 container">
+    <h2>🌍 Global Feed (Anonymous Posts)</h2>
+  </div>
+
+  <!-- Sort Filter -->
+  <div class="text-center mb-3 container">
+    <select id="sortSelect" class="form-select w-50 mx-auto">
+      <option value="latest">Sort by: Latest</option>
+      <option value="oldest">Sort by: Oldest</option>
+    </select>
+  </div>
+
+  <!-- Posts Container -->
+  <div id="postContainer"></div>
+
+  <!-- Scroll to Top -->
+  <button id="scrollTopBtn" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">↑ Top</button>
+
+  <!-- Theme Toggle Script -->
+  <script>
+    // Example toggle (trigger manually or based on localStorage, etc.)
+    // document.body.classList.add('dark-mode'); // Turn ON
+    // document.body.classList.remove('dark-mode'); // Turn OFF
+  </script>
+
+  <!-- Main Feed Script (unchanged except sort handler) -->
+  <script>
+     // Check if dark mode is enabled in localStorage
+  if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+  }
+
+  function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark-mode');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  }
+
+
+    async function fetchPosts(sort = 'latest') {
+      try {
+        const response = await fetch('http://localhost:3000/getGlobalPosts');
+        const posts = await response.json();
+
+        const sortedPosts = sort === 'latest'
+          ? posts.sort((a, b) => new Date(b.CreatedAt) - new Date(a.CreatedAt))
+          : posts.sort((a, b) => new Date(a.CreatedAt) - new Date(b.CreatedAt));
+
+        const container = document.getElementById('postContainer');
+        container.innerHTML = '';
+
+        sortedPosts.forEach(post => {
+          const postDiv = document.createElement('div');
+          postDiv.className = 'Post card p-3 shadow-sm mb-3';
+
+          const createdAt = new Date(post.CreatedAt);
+          const readableDate = isNaN(createdAt.getTime()) ? 'Unknown Date' : createdAt.toLocaleString();
+
+          postDiv.innerHTML = `
+            <p class="anonymous-label">Posted anonymously on <em>${readableDate}</em></p>
+            <h2>${post.Title}</h2>
+            <p>${post.Description}</p>
+          `;
+
+          const imgSrc = post.ImageBase64;
+
+
+          if (imgSrc && imgSrc.startsWith('data:image')) {
+  const img = document.createElement('img');
+  img.src = imgSrc;
+  img.alt = 'Post Image';
+  img.className = 'post-image';
+  postDiv.appendChild(img);
+}
+
+
+          const reactionDiv = document.createElement('div');
+          reactionDiv.className = 'reactions mt-2';
+          reactionDiv.innerHTML = `
+            <button onclick="react('like', ${post.ID}, this)" class="reaction-btn" id="btn-like-${post.ID}">👍 <span id="like-${post.ID}">0</span></button>
+            <button onclick="react('love', ${post.ID}, this)" class="reaction-btn" id="btn-love-${post.ID}">❤️ <span id="love-${post.ID}">0</span></button>
+            <button onclick="react('sad', ${post.ID}, this)" class="reaction-btn" id="btn-sad-${post.ID}">😢 <span id="sad-${post.ID}">0</span></button>
+            <button onclick="react('laugh', ${post.ID}, this)" class="reaction-btn" id="btn-laugh-${post.ID}">😂 <span id="laugh-${post.ID}">0</span></button>
+          `;
+          postDiv.appendChild(reactionDiv);
+
+          container.appendChild(postDiv);
+
+          fetchReactions(post.ID);
+          highlightReaction(post.ID);
+        });
+      } catch (err) {
+        console.error('Error loading posts:', err);
+        alert('Failed to load posts. Please try again later.');
+      }
+    }
+
+    async function react(type, postID, button) {
+      const userID = localStorage.getItem('userID');
+      if (!userID) return alert('Please login to react.');
+
+      try {
+        const res = await fetch('http://localhost:3000/reactToPost', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userID, postID, reactionType: type })
+        });
+
+        if (!res.ok) throw new Error("Reaction failed");
+
+        await fetchReactions(postID);
+        await highlightReaction(postID);
+        animateButton(button);
+      } catch (err) {
+        console.error('Reaction error:', err);
+        alert('Error reacting to post');
+      }
+    }
+
+    async function fetchReactions(postID) {
+      try {
+        const res = await fetch(`http://localhost:3000/getReactions?postID=${postID}`);
+        const counts = await res.json();
+
+        document.getElementById(`like-${postID}`).textContent = counts.like || 0;
+        document.getElementById(`love-${postID}`).textContent = counts.love || 0;
+        document.getElementById(`sad-${postID}`).textContent = counts.sad || 0;
+        document.getElementById(`laugh-${postID}`).textContent = counts.laugh || 0;
+      } catch (err) {
+        console.error('Error fetching reactions:', err);
+      }
+    }
+
+    async function highlightReaction(postID) {
+      try {
+        const userID = localStorage.getItem('userID');
+        if (!userID) return;
+
+        const res = await fetch(`http://localhost:3000/getUserReaction?userID=${userID}&postID=${postID}`);
+        const { reaction } = await res.json();
+
+        ['like', 'love', 'sad', 'laugh'].forEach(type => {
+          const btn = document.getElementById(`btn-${type}-${postID}`);
+          if (btn) btn.classList.remove('active');
+        });
+
+        if (reaction) {
+          const activeBtn = document.getElementById(`btn-${reaction}-${postID}`);
+          if (activeBtn) activeBtn.classList.add('active');
+        }
+      } catch (err) {
+        console.error('Error highlighting reaction:', err);
+      }
+    }
+
+    function animateButton(btn) {
+      btn.style.transform = 'scale(1.3)';
+      setTimeout(() => {
+        btn.style.transform = 'scale(1)';
+      }, 200);
+    }
+
+    document.getElementById('sortSelect').addEventListener('change', (e) => {
+      fetchPosts(e.target.value);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchPosts();
+    });
+  </script>
+</body>
+</html>
+
+
+
