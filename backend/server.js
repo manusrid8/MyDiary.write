@@ -32,7 +32,7 @@ const connection = mysql.createConnection({
   database: process.env.DB_NAME,
 });
 app.get('/', (req, res) => {
-  res.redirect('/login.html');
+  res.redirect('/Login.html');
 });
 
 
