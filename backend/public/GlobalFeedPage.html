@@ -192,7 +192,8 @@
 
     async function fetchPosts(sort = 'latest') {
       try {
-        const response = await fetch('http://localhost:3000/getGlobalPosts');
+        const response = await fetch('https://mydiarywrite.onrender.com/getGlobalPosts');
+
         const posts = await response.json();
 
         const sortedPosts = sort === 'latest'
@@ -253,7 +254,7 @@
       if (!userID) return alert('Please login to react.');
 
       try {
-        const res = await fetch('http://localhost:3000/reactToPost', {
+        const res = await fetch('https://mydiarywrite.onrender.com/reactToPost', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userID, postID, reactionType: type })
@@ -272,7 +273,7 @@
 
     async function fetchReactions(postID) {
       try {
-        const res = await fetch(`http://localhost:3000/getReactions?postID=${postID}`);
+        const res = await fetch(`https://mydiarywrite.onrender.com/getReactions?postID=${postID}`);
         const counts = await res.json();
 
         document.getElementById(`like-${postID}`).textContent = counts.like || 0;
@@ -289,7 +290,7 @@
         const userID = localStorage.getItem('userID');
         if (!userID) return;
 
-        const res = await fetch(`http://localhost:3000/getUserReaction?userID=${userID}&postID=${postID}`);
+        const res = await fetch(`https://mydiarywrite.onrender.com/getUserReaction?userID=${userID}&postID=${postID}`);
         const { reaction } = await res.json();
 
         ['like', 'love', 'sad', 'laugh'].forEach(type => {

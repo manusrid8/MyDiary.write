@@ -46,39 +46,47 @@
 
   <!-- Post Submission Script -->
   <script>
-    document.getElementById('postForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
+  const BACKEND_URL = 'https://mydiarywrite.onrender.com'; // ✅ Update if different
 
-      const form = document.getElementById('postForm');
-      const formData = new FormData(form);
+  document.getElementById('postForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-      const userID = localStorage.getItem('userID');
-      if (!userID || isNaN(userID)) {
-        alert('User not logged in or invalid user ID. Please login again.');
-        return;
+    const form = document.getElementById('postForm');
+    const formData = new FormData(form);
+
+    const userID = localStorage.getItem('userID');
+    if (!userID || isNaN(userID)) {
+      alert('User not logged in or invalid user ID. Please login again.');
+      return;
+    }
+
+    formData.append('userID', userID);
+
+    const postButton = document.getElementById('postbutton');
+    postButton.disabled = true;
+
+    try {
+      const response = await fetch(`${BACKEND_URL}/createPost`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        alert("Post submitted successfully!");
+        window.location.href = '/Feedpage.html'; // ✅ adjust case if needed
+      } else {
+        const errorText = await response.text();
+        alert('Failed to submit post: ' + errorText);
+        postButton.disabled = false;
       }
+    } catch (error) {
+      console.error('Post error:', error);
+      alert('Server error. Try again later.');
+      postButton.disabled = false;
+    }
+  });
+</script>
 
-      formData.append('userID', userID);
-
-      try {
-        const response = await fetch('http://localhost:3000/createPost', {
-          method: 'POST',
-          body: formData
-        });
-
-        if (response.ok) {
-          alert("Post submitted successfully!");
-          window.location.href = '/Feedpage.html';
-        } else {
-          const errorText = await response.text();
-          alert('Failed to submit post: ' + errorText);
-        }
-      } catch (error) {
-        console.error('Post error:', error);
-        alert('Server error. Try again later.');
-      }
-    });
-  </script>
 </body>
 </html>
 
