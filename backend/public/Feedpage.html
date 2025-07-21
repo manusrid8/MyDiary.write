@@ -70,16 +70,17 @@
           const postDiv = document.createElement('div');
           postDiv.className = 'Post border rounded p-3 mb-4 shadow-sm bg-light';
 
-          const snippet = post.Description.length > 300 
-  ? post.Description.substring(0, 300) + '...'
-  : post.Description;
+          const snippet = post.PostDescription.length > 300 
+  ? post.PostDescription.substring(0, 300) + '...'
+  : post.PostDescription;
 
 postDiv.innerHTML = `
-  <h4>${post.Title}</h4>
+  <h4>${post.PostTitle}</h4>
   <p><small class="text-muted">Posted on: ${new Date(post.CreatedAt).toLocaleString()}</small></p>
   <p>${snippet}</p>
   <a class="btn viewPostButton" href="/Dedicatedpage.html?postID=${post.ID}">View Post</a>
 `;
+
 
 
 

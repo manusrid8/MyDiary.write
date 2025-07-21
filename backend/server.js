@@ -196,12 +196,12 @@ app.post('/submitPost', (req, res) => {
 
 // Get Global Posts
 app.get('/getGlobalPosts', (req, res) => {
-  const query = `
-    SELECT ID, PostTitle AS Title, PostDescription AS Description, CreatedAt, ImageBase64 
-    FROM Posts 
-    WHERE Visibility = 'global' 
-    ORDER BY ID DESC
-  `;
+ const query = `
+  SELECT ID, PostTitle, PostDescription, CreatedAt, ImageBase64 
+  FROM Posts 
+  WHERE Visibility = 'global' 
+  ORDER BY ID DESC
+`;
 
   connection.query(query, (err, results) => {
     if (err) {
@@ -226,16 +226,17 @@ app.get('/getMyPosts', (req, res) => {
   if (!userID) return res.status(400).send("Missing userID");
 
   const query = `
-    SELECT 
-      ID, 
-      PostTitle AS Title, 
-      PostDescription AS Description, 
-      CreatedAt, 
-      ImageBase64 
-    FROM Posts 
-    WHERE UserID = ? 
-    ORDER BY ID DESC
-  `;
+  SELECT 
+    ID, 
+    PostTitle, 
+    PostDescription, 
+    CreatedAt, 
+    ImageBase64 
+  FROM Posts 
+  WHERE UserID = ? 
+  ORDER BY ID DESC
+`;
+
 
   connection.query(query, [userID], (err, result) => {
     if (err) {
@@ -262,16 +263,17 @@ app.get('/getPostByID', (req, res) => {
   if (!postID) return res.status(400).send("Missing postID");
 
   const query = `
-    SELECT 
-      ID, 
-      Title AS PostTitle, 
-      Description AS PostDescription, 
-      CreatedAt, 
-      ImageBase64,
-      UserID
-    FROM Posts 
-    WHERE ID = ?
-  `;
+  SELECT 
+    ID, 
+    PostTitle, 
+    PostDescription, 
+    CreatedAt, 
+    ImageBase64,
+    UserID
+  FROM Posts 
+  WHERE ID = ?
+`;
+
 
   connection.query(query, [postID], (err, result) => {
     if (err) return res.status(500).send("Database error");
