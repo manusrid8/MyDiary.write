@@ -39,7 +39,7 @@
     const password = document.getElementById('passwordInput').value.trim();
 
     try {
-      const response = await fetch('http://localhost:3000/registerUser', {
+      const response = await fetch('/registerUser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -61,6 +61,7 @@
     }
   });
 </script>
+
 
   </body>
 </html>
