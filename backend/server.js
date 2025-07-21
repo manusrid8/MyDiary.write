@@ -51,22 +51,33 @@ const transporter = nodemailer.createTransport({
 // Registration
 app.post('/registerUser', async (req, res) => {
   const { email, password } = req.body;
-  if (!email.endsWith('@gmail.com')) return res.status(400).send("Only Gmail IDs are allowed.");
+  if (!email.endsWith('@gmail.com')) {
+    console.log("❌ Invalid email domain");
+    return res.status(400).send("Only Gmail IDs are allowed.");
+  }
 
   connection.query('SELECT * FROM Users WHERE EmailID = ?', [email], async (err, results) => {
-    if (err) return res.status(500).send('Database error');
-    if (results.length > 0) return res.status(400).send("User already exists.");
+    if (err) {
+      console.error("❌ SELECT error:", err);
+      return res.status(500).send('Database error');
+    }
+
+    if (results.length > 0) {
+      console.log("⚠️ User already exists:", email);
+      return res.status(400).send("User already exists.");
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     connection.query(
       'INSERT INTO Users (EmailID, HashedPassword) VALUES (?, ?)',
       [email, hashedPassword],
       (err) => {
-        // ✅ MODIFY THIS BLOCK:
         if (err) {
-          console.error("❌ Registration INSERT error:", err); // ADD THIS LINE
+          console.error("❌ INSERT error during registration:", err); // most important line
           return res.status(500).send('Database error');
         }
+
+        console.log("✅ User registered:", email);
         res.status(200).send("Registration successful.");
       }
     );
