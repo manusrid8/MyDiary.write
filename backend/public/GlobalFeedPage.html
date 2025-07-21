@@ -211,10 +211,11 @@
           const readableDate = isNaN(createdAt.getTime()) ? 'Unknown Date' : createdAt.toLocaleString();
 
           postDiv.innerHTML = `
-            <p class="anonymous-label">Posted anonymously on <em>${readableDate}</em></p>
-            <h2>${post.Title}</h2>
-            <p>${post.Description}</p>
-          `;
+  <p class="anonymous-label">Posted anonymously on <em>${readableDate}</em></p>
+  <h2>${post.PostTitle}</h2>
+  <p>${post.PostDescription}</p>
+`;
+
 
           const imgSrc = post.ImageBase64;
 
