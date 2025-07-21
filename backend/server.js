@@ -58,12 +58,13 @@ app.post('/registerUser', async (req, res) => {
     if (results.length > 0) return res.status(400).send("User already exists.");
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    
     connection.query(
       'INSERT INTO Users (EmailID, HashedPassword) VALUES (?, ?)',
       [email, hashedPassword],
       (err) => {
         if (err) {
-          console.error('❌ Error during INSERT query:', err);  // <-- 👈 ADD THIS LINE
+          console.error('❌ Registration INSERT Error:', err); // 👈 Add this line!
           return res.status(500).send('Database error');
         }
         res.status(200).send("Registration successful.");
