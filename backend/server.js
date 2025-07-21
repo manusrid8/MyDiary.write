@@ -156,9 +156,9 @@ app.post('/createPost', upload.single('image'), (req, res) => {
   const safeVisibility = (visibility === 'global') ? 'global' : 'private';
 
   const sql = `
-    INSERT INTO Posts (UserID, Title, Description, Visibility, ImageBase64)
-    VALUES (?, ?, ?, ?, ?)
-  `;
+  INSERT INTO Posts (UserID, PostTitle, PostDescription, Visibility, ImageBase64)
+  VALUES (?, ?, ?, ?, ?)
+`;
 
   connection.query(sql, [userID, title, description, safeVisibility, imageBuffer], (err, result) => {
     if (err) {
@@ -180,10 +180,9 @@ app.post('/submitPost', (req, res) => {
   const safeVisibility = (visibility === 'global') ? 'global' : 'private';
 
   const query = `
-    INSERT INTO Posts (Title, Description, UserID, Visibility, ImageBase64)
-    VALUES (?, ?, ?, ?, ?)
-  `;
-
+  INSERT INTO Posts (PostTitle, PostDescription, UserID, Visibility, ImageBase64)
+  VALUES (?, ?, ?, ?, ?)
+`;
   connection.query(query, [title, description, userID, safeVisibility, imageBase64 || null], (err, result) => {
     if (err) {
       console.error("Post submission error:", err.message);
