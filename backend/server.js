@@ -197,7 +197,7 @@ app.post('/submitPost', (req, res) => {
 // Get Global Posts
 app.get('/getGlobalPosts', (req, res) => {
   const query = `
-    SELECT ID, Title, Description, CreatedAt, ImageBase64 
+    SELECT ID, PostTitle AS Title, PostDescription AS Description, CreatedAt, ImageBase64 
     FROM Posts 
     WHERE Visibility = 'global' 
     ORDER BY ID DESC
@@ -219,6 +219,7 @@ app.get('/getGlobalPosts', (req, res) => {
     return res.status(200).json(posts);
   });
 });
+
 //getmyposts
 app.get('/getMyPosts', (req, res) => {
   const userID = req.query.userID;
@@ -227,8 +228,8 @@ app.get('/getMyPosts', (req, res) => {
   const query = `
     SELECT 
       ID, 
-      Title, 
-      Description, 
+      PostTitle AS Title, 
+      PostDescription AS Description, 
       CreatedAt, 
       ImageBase64 
     FROM Posts 
@@ -252,6 +253,7 @@ app.get('/getMyPosts', (req, res) => {
     res.status(200).json(posts);
   });
 });
+
 
 //getpostsbyid
 
@@ -296,8 +298,8 @@ app.put('/updatePost/:id', upload.single('image'), (req, res) => {
   }
 
   const updateFields = {
-    Title: title,
-    Description: description,
+    PostTitle: title,
+    PostDescription: description,
     Visibility: visibility
   };
 
@@ -307,11 +309,17 @@ app.put('/updatePost/:id', upload.single('image'), (req, res) => {
 
   const query = `UPDATE Posts SET ? WHERE ID = ? AND UserID = ?`;
   connection.query(query, [updateFields, postID, userID], (err, result) => {
-    if (err) return res.status(500).send("Database error");
-    if (result.affectedRows === 0) return res.status(403).send("Unauthorized or post not found");
+    if (err) {
+      console.error("Update error:", err.message);
+      return res.status(500).send("Database error");
+    }
+    if (result.affectedRows === 0) {
+      return res.status(403).send("Unauthorized or post not found");
+    }
     res.status(200).send("Post updated");
   });
 });
+
 
 
 //deletepost
