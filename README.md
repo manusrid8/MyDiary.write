@@ -112,7 +112,4 @@ GitHub: [@manusrid8](https://github.com/manusrid8)
 
 ---
 
-## 📜 License
-
-Licensed under the [MIT License](LICENSE).
 </details>
