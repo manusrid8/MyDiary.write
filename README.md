@@ -1,10 +1,8 @@
-<details> <summary>📄 Click to expand full content (copy all of this)</summary>
-markdown
-Copy
-Edit
-# 📔 MyDiary – A Personal Digital Journal
+<details> 
 
-**MyDiary** is a secure and expressive full-stack journaling application that allows users to write, store, and explore personal and public posts — all while maintaining privacy. With a clean UI, emoji support, image uploads, and user authentication, MyDiary blends simplicity and functionality for modern diary-keeping.
+# 📔 MyDiary.write – A Personal Digital Journal
+
+**MyDiary.write** is a secure and expressive full-stack journaling application that allows users to write, store, and explore personal and public posts — all while maintaining privacy. With a clean UI, emoji support, image uploads, and user authentication, MyDiary blends simplicity and functionality for modern diary-keeping.
 
 ---
 
@@ -96,17 +94,16 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🌐 Live Demo
 
-> Add your deployed site link here (Render/Railway/etc.)
-
----
 
 ## 📸 Screenshots
 
-> Upload UI screenshots here: Login, Feed, Post, etc.
-
----
+Login page
+<img width="1910" height="880" alt="image" src="https://github.com/user-attachments/assets/68e71cef-9c68-418e-a8d8-458345324487" />
+Global Feedpage
+<img width="1848" height="875" alt="image" src="https://github.com/user-attachments/assets/c10dcd8f-ca7a-4ff0-b7c2-eadf139d50a4" />
+Post page
+<img width="1894" height="866" alt="image" src="https://github.com/user-attachments/assets/07f2b6d3-dd46-4cfe-8711-28d10f7aa304" />
 
 ## 🧑‍💻 Author
 
