@@ -96,7 +96,7 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 
 
-## 📸 Screenshots and Demo Video
+## 📸 Screenshots
 
 Login page
 <img width="1910" height="880" alt="image" src="https://github.com/user-attachments/assets/68e71cef-9c68-418e-a8d8-458345324487" />
@@ -105,7 +105,7 @@ Global Feedpage
 Post page
 <img width="1894" height="866" alt="image" src="https://github.com/user-attachments/assets/07f2b6d3-dd46-4cfe-8711-28d10f7aa304" />
 
-Demo video
+
 
 
 ## 🧑‍💻 Author
