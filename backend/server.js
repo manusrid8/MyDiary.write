@@ -131,12 +131,30 @@ app.post('/resetPassword', async (req, res) => {
       html: `<p>Hello,</p><p>Your temporary password is:</p><h3>${newPassword}</h3><p>Please log in using this password and change it immediately.</p>`
     };
 
-    transporter.sendMail(mailOptions, (error) => {
-      if (error) return res.status(500).send("Failed to send email");
-      res.status(200).send("Temporary password sent to your email.");
-    });
-  });
+    transporter.sendMail(mailOptions, (error, info) => {
+  if (error) {
+    console.error("Nodemailer error:", error);
+    return res.status(500).send("Failed to send email");
+  }
+  console.log("Email sent successfully:", info.response);
+  res.status(200).send("Temporary password sent to your email.");
 });
+app.get('/dev/test-email', async (req, res) => {
+  try {
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER,
+      subject: "Render Test Email",
+      text: "If you receive this, Gmail SMTP is working.",
+    });
+    console.log("Test email sent:", info.response);
+    res.send("Test email sent!");
+  } catch (err) {
+    console.error("TEST EMAIL ERROR:", err);
+    res.status(500).send("Test failed");
+  }
+});
+
 
 // Update Password
 app.post('/updatePassword', async (req, res) => {
