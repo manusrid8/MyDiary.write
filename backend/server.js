@@ -40,14 +40,23 @@ connection.connect((err) => {
   if (err) return console.error('Database connection failed:', err);
   console.log('Connected to MySQL database!');
 });
+// Email transporter (use env vars for both user & pass)
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: process.env.EMAIL_SERVICE || 'gmail',
   auth: {
-    user: 'mydiary.write@gmail.com',
-    pass: process.env.EMAIL_PASS
+    user: process.env.EMAIL_USER,    // set this in Render env
+    pass: process.env.EMAIL_PASS     // set this in Render env (16-char App Password)
   }
 });
 
+// Verify SMTP connection at startup so we catch auth issues early
+transporter.verify((err, success) => {
+  if (err) {
+    console.error('❌ Nodemailer SMTP verify failed:', err);
+  } else {
+    console.log('✅ Nodemailer SMTP verified — ready to send emails');
+  }
+});
 // Registration
 app.post('/registerUser', async (req, res) => {
   const { email, password } = req.body;
